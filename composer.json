@@ -1,0 +1,39 @@
+{
+    "name": "benbjurstrom/eloquent-postgres-uuids",
+    "description": "A laravel eloquent trait facilitating the use of uuids as the primary key in a postgres database",
+    "type": "laravel",
+    "keywords": [
+        "postgres",
+        "uuid",
+        "laravel",
+        "eloquent",
+        "primary key"
+    ],
+    "require": {
+        "php":"^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0",
+        "orchestra/testbench": "^3.6",
+        "webpatser/laravel-uuid": "^3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Bjurstrom",
+            "email": "bbjurstrom@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BenBjurstrom\\EloquentPostgresUuids\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BenBjurstrom\\EloquentPostgresUuids\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
