@@ -8,4 +8,6 @@ use BenBjurstrom\EloquentPostgresUuids\HasUuid;
 class User extends Model
 {
     use HasUuid;
+
+    public $primaryKey = 'user_id';
 }

@@ -3,6 +3,7 @@
 namespace BenBjurstrom\EloquentPostgresUuids\Tests;
 
 use BenBjurstrom\EloquentPostgresUuids\Tests\Fixtures\User;
+use BenBjurstrom\EloquentPostgresUuids\ValidateUuid;
 
 class HasUuidTest extends TestCase
 {
@@ -15,7 +16,12 @@ class HasUuidTest extends TestCase
         $user->save();
         $user->refresh();
 
-        $this->assertEquals(36, strlen($user->id));
+        $validator = app('validator')->make(
+            ['id' => $user->user_id],
+            ['id' => [new ValidateUuid]]
+        );
+
+        $this->assertTrue($validator->passes());
     }
 
     /**
@@ -27,7 +33,28 @@ class HasUuidTest extends TestCase
         $user->save();
         $user->refresh();
 
-        $result = User::findOrFail($user->id);
-        $this->assertEquals($user->id, $result->id);
+        $result = User::findOrFail($user->user_id);
+        $this->assertEquals($user->user_id, $result->user_id);
+    }
+
+    public function testRouteModelBinding()
+    {
+        $user  = new User();
+        $user->save();
+        $user->refresh();
+
+        $this->getJson(url('/users/' . $user->user_id))
+            ->assertStatus(200)
+            ->assertSeeText($user->user_id);
+    }
+
+    public function testRouteModelBindingFailsGracefully()
+    {
+        $user  = new User();
+        $user->save();
+        $user->refresh();
+
+        $response = $this->getJson(url('/users/' . 1))
+            ->assertStatus(422);
     }
 }

@@ -1,8 +1,10 @@
 <?php
 namespace BenBjurstrom\EloquentPostgresUuids\Tests;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use BenBjurstrom\EloquentPostgresUuids\Tests\Fixtures\User;
 
 abstract class TestCase extends Orchestra
 {
@@ -12,6 +14,10 @@ abstract class TestCase extends Orchestra
         parent::setUp();
         $this->loadMigrationsFrom(realpath(__DIR__.'/Fixtures'));
         $this->artisan('migrate');
+
+        \Route::get('users/{user}', function (User $user) {
+            return $user->user_id;
+        })->middleware(SubstituteBindings::class);
     }
 
     /**
