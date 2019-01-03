@@ -22,6 +22,16 @@ trait HasUuid
     }
 
     /**
+     * Override the getKeyType method. Necessary for Laravel 5.7.14+
+     *
+     * @return string
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    /**
      * Override the getCasts method to cast the UUID object to a string
      *
      * @return array
@@ -34,7 +44,8 @@ trait HasUuid
     }
 
     /**
-     * Override the resolveRouteBinding method to validate the parameter is a uuid
+     * Override the resolveRouteBinding method to validate the parameter if
+     * the column type is guid
      *
      * @param \Illuminate\Database\Eloquent\Model
      * @return \Illuminate\Database\Eloquent\Model|null
@@ -42,13 +53,20 @@ trait HasUuid
      */
     public function resolveRouteBinding($value)
     {
-        $validator = app('validator')->make(
-            ['id' => $value],
-            ['id' => [new ValidateUuid]]
-        );
+        $type = \DB::connection()
+            ->getDoctrineColumn($this->getTable(), $this->getRouteKeyName())
+            ->getType()
+            ->getName();
 
-        if (! $validator->passes()) {
-            throw new ValidationException($validator);
+        if($type === 'guid'){
+            $validator = app('validator')->make(
+                ['id' => $value],
+                ['id' => [new ValidateUuid]]
+            );
+
+            if (! $validator->passes()) {
+                throw new ValidationException($validator);
+            }
         }
 
         return parent::resolveRouteBinding($value);
