@@ -32,6 +32,15 @@ trait HasUuid
     }
 
     /**
+     * Override the getIncrementing method.
+     *
+     * @return string
+     */
+    public function getIncrementing(){
+        return false;
+    }
+
+    /**
      * Override the getCasts method to cast the UUID object to a string
      *
      * @return array
