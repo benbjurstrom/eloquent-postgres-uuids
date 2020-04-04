@@ -60,7 +60,7 @@ trait HasUuid
      * @return \Illuminate\Database\Eloquent\Model|null
      * @throws ValidationException
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         $type = \DB::connection()
             ->getDoctrineColumn($this->getTable(), $this->getRouteKeyName())

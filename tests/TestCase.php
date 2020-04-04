@@ -9,7 +9,7 @@ use BenBjurstrom\EloquentPostgresUuids\Tests\Fixtures\User;
 abstract class TestCase extends Orchestra
 {
     use DatabaseTransactions;
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->loadMigrationsFrom(realpath(__DIR__.'/Fixtures'));
