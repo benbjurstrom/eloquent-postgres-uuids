@@ -47,7 +47,7 @@ trait HasUuid
      */
     public function getCasts()
     {
-        $this->casts = array_unique(array_merge($this->casts, [$this->getKeyName() => 'string']));
+        $this->casts = array_merge($this->casts, [$this->getKeyName() => 'string']);
 
         return parent::getCasts();
     }
